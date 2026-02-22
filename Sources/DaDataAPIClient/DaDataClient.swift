@@ -60,6 +60,38 @@ public final class DaDataClient: Sendable {
         let response: DaDataSuggestionsResponse<DaDataParty> = try await sendWithRetry(request)
         return response.suggestions
     }
+    
+    /// Suggests address by free-form query.
+    /// Endpoint: /suggest/address
+    public func suggestAddress(
+        query: String,
+        count: Int = 1
+    ) async throws -> [DaDataSuggestion<DaDataAddress>] {
+        let endpoint = config.baseURL
+            .appendingPathComponent("suggestions")
+            .appendingPathComponent("api")
+            .appendingPathComponent("4_1")
+            .appendingPathComponent("rs")
+            .appendingPathComponent("suggest")
+            .appendingPathComponent("address")
+        
+        var request = URLRequest(url: endpoint)
+        request.httpMethod = "POST"
+        request.timeoutInterval = config.timeout
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue("application/json", forHTTPHeaderField: "Accept")
+        request.setValue("Token \(config.token)", forHTTPHeaderField: "Authorization")
+        
+        let payload = DaDataSuggestRequest(query: query, count: count)
+        request.httpBody = try jsonEncoder.encode(payload)
+        
+        let response: DaDataSuggestionsResponse<DaDataAddress> = try await sendWithRetry(request)
+        return response.suggestions
+    }
+    
+    public func suggestAddressFirst(query: String) async throws -> DaDataSuggestion<DaDataAddress>? {
+        try await suggestAddress(query: query, count: 1).first
+    }
 
     /// Convenience: returns the first suggestion or nil.
     public func findPartyFirst(innOrOgrn: String) async throws -> DaDataSuggestion<DaDataParty>? {

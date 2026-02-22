@@ -15,3 +15,13 @@ internal struct DaDataFindByIdRequest: Encodable {
         self.count = count
     }
 }
+
+internal struct DaDataSuggestRequest: Encodable {
+    let query: String
+    let count: Int?
+    
+    init(query: String, count: Int?) {
+        self.query = query
+        self.count = count
+    }
+}

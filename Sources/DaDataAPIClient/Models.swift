@@ -110,3 +110,44 @@ public struct DaDataParty: Decodable, Sendable {
         }
     }
 }
+
+// MARK: - Address suggestion model
+
+public struct DaDataAddress: Decodable, Sendable {
+    public let value: String?
+    public let unrestrictedValue: String?
+    public let data: DaDataAddressData?
+    
+    private enum CodingKeys: String, CodingKey {
+        case value
+        case unrestrictedValue = "unrestricted_value"
+        case data
+    }
+}
+
+public struct DaDataAddressData: Decodable, Sendable {
+    public let postalCode: String?
+    public let country: String?
+    
+    public let regionWithType: String?
+    public let cityWithType: String?
+    public let streetWithType: String?
+    
+    public let house: String?
+    public let block: String?
+    public let flat: String?
+    
+    public let fiasId: String?
+    public let kladrId: String?
+    
+    private enum CodingKeys: String, CodingKey {
+        case postalCode = "postal_code"
+        case country
+        case regionWithType = "region_with_type"
+        case cityWithType = "city_with_type"
+        case streetWithType = "street_with_type"
+        case house, block, flat
+        case fiasId = "fias_id"
+        case kladrId = "kladr_id"
+    }
+}
