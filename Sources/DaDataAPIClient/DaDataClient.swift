@@ -35,10 +35,10 @@ public final class DaDataClient: Sendable {
     /// - Parameters:
     ///   - innOrOgrn: INN (10/12) or OGRN.
     ///   - count: suggestions count (default 1).
-    public func findParty(
+    public func fetchCompanyInfo(
         innOrOgrn: String,
         count: Int = 1
-    ) async throws -> [DaDataSuggestion<DaDataParty>] {
+    ) async throws -> [DaDataSuggestion<DaDataCompanyInfo>] {
         let endpoint = config.baseURL
             .appendingPathComponent("suggestions")
             .appendingPathComponent("api")
@@ -57,7 +57,7 @@ public final class DaDataClient: Sendable {
         let payload = DaDataFindByIdRequest(query: innOrOgrn, count: count)
         request.httpBody = try jsonEncoder.encode(payload)
 
-        let response: DaDataSuggestionsResponse<DaDataParty> = try await sendWithRetry(request)
+        let response: DaDataSuggestionsResponse<DaDataCompanyInfo> = try await sendWithRetry(request)
         return response.suggestions
     }
     
@@ -94,8 +94,8 @@ public final class DaDataClient: Sendable {
     }
 
     /// Convenience: returns the first suggestion or nil.
-    public func findPartyFirst(innOrOgrn: String) async throws -> DaDataSuggestion<DaDataParty>? {
-        try await findParty(innOrOgrn: innOrOgrn, count: 1).first
+    public func fetchCompanyInfoFirts(innOrOgrn: String) async throws -> DaDataSuggestion<DaDataCompanyInfo>? {
+        try await fetchCompanyInfo(innOrOgrn: innOrOgrn, count: 1).first
     }
 
     // MARK: - Internals

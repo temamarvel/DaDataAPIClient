@@ -23,9 +23,9 @@ public struct DaDataSuggestion<T: Decodable & Sendable>: Decodable, Sendable {
     }
 }
 
-// MARK: - Party model (subset useful for validation)
+// MARK: - Company info model (subset useful for validation)
 
-public struct DaDataParty: Decodable, Sendable {
+public struct DaDataCompanyInfo: Decodable, Sendable {
     public let inn: String?
     public let kpp: String?
     public let ogrn: String?
